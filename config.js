@@ -1,4 +1,4 @@
-// The app works immediately in local prototype mode with both values blank.
-// To enable real shared syncing, follow README.md and supply your Supabase keys.
-export const SUPABASE_URL = '';
-export const SUPABASE_ANON_KEY = '';
+// Public browser configuration for Willa's Little Wins.
+// This is a Supabase *publishable* key, not a secret/service-role key.
+export const SUPABASE_URL = 'https://jtumxiubazzihsmtkgzy.supabase.co';
+export const SUPABASE_ANON_KEY = 'sb_publishable_M4IAYcbTATMSsJejJFKhng_TX9rrMQm';
