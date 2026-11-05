@@ -29,11 +29,12 @@ You can deploy these files as a static site to GitHub Pages, Cloudflare Pages, o
 ## Enable real sharing (optional, but necessary for both phones)
 
 1. Create a free Supabase project. Open **SQL Editor**, and run the full `supabase.sql` file against a new project. This creates household membership, private data tables, row-level security, private image storage, and a two-person invite flow.
-2. From the Supabase project's **Connect** dialog, copy the **Project URL** and **publishable key**. In the GitHub repository, edit `config.js`: place the project URL in `SUPABASE_URL` and the publishable key in `SUPABASE_ANON_KEY` (legacy variable name retained for compatibility). **Never place a secret key or service-role key in the repository.**
+2. From the Supabase project's **Connect** dialog, copy the **Project URL** and **publishable key**. In the GitHub repository, edit `config.js`: place the project URL in `SUPABASE_URL` and the publishable key in `SUPABASE_ANON_KEY` (legacy variable name retained for compatibility). The project URL and browser-safe publishable key have been connected for this deployment. **Never place a secret key or service-role key in the repository.**
 3. Under **Authentication > Providers**, ensure email login is enabled. Under **Authentication > URL Configuration**, set the Site URL to `https://idyllic-stroopwafel.github.io/willas-little-wins/` and add the same exact URL under Redirect URLs. Magic links must return to this address.
-4. Host the folder on an HTTPS static host.
-5. On the first phone, enter an email address, follow the sign-in link, choose Hil or Peter, and create the household (leave invite code empty).
-6. In **Our pets**, copy the household invite code. On the other phone, sign in using the other person's email, choose their name, and enter that code. Both now see the same entries and media.
+4. **Configure email delivery before inviting the second household member.** Supabase's default SMTP sends only to project organization/team email addresses and has a very low rate limit. For Hil to receive magic links without access to your Supabase project administration, configure a custom SMTP provider under **Authentication > SMTP Settings** (e.g., Resend, Postmark, or Brevo). See [Supabase's SMTP guide](https://supabase.com/docs/guides/auth/auth-smtp). Do not place SMTP credentials in this public repository.
+5. Host the folder on an HTTPS static host.
+6. On the first phone, enter an email address, follow the sign-in link, choose Hil or Peter, and create the household (leave invite code empty).
+7. In **Our pets**, copy the household invite code. On the other phone, sign in using the other person's email, choose their name, and enter that code. Both now see the same entries and media.
 
 **Note:** Switching from local to cloud mode does *not* automatically import local prototype data. Before adding your Supabase config, use **Our pets → Export my backup** on the device where you tested the prototype. Keep the backup as a record of past attempts; the cloud household will begin with fresh training logs. The eight bundled starter photos remain visible in both modes.
 
