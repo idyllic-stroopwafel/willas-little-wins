@@ -11,7 +11,7 @@ A tiny, mobile-first shared scrapbook and training log for Willa, with Oscar and
 - View comfortable repetitions, recent attempts, and the household's Bravery Jar. Filling each milestone unlocks a **new collectible emoji sticker** usable on scrapbook photos and training logs; see the sticker shelf under **Little wins**.
 - Hidden, noncompetitive bravery-jar weighting gives Hil's participation extra influence on unlocks. It's intended to celebrate participation, not measure Willa's performance. Comfortable repetitions are counted separately.
 - **Local preview mode** immediately works with no configuration, with photos stored in IndexedDB and metadata in localStorage. Use **Export backup** before clearing browser data.
-- **Optional cloud mode** supports separate email sign-ins, a shared two-person household, private photo storage, and near-real-time refresh between phones, after setting up Supabase.
+- **Cloud mode** supports separate email-and-password accounts, a shared two-person household, private photo storage, and near-real-time refresh between phones, after setting up Supabase.
 - Install as an iPhone home-screen web app when served from an HTTPS website.
 
 ## Try it now (local preview)
@@ -26,17 +26,17 @@ Then visit `http://localhost:8000` in a browser. The app has no build step. When
 
 You can deploy these files as a static site to GitHub Pages, Cloudflare Pages, or Netlify. **Do not use `file://` to open index.html**: browsers restrict JavaScript modules and photo storage in that mode.
 
-## Enable real sharing (optional, but necessary for both phones)
+## Enable real sharing — no domain or SMTP required
 
-1. Create a free Supabase project. Open **SQL Editor**, and run the full `supabase.sql` file against a new project. This creates household membership, private data tables, row-level security, private image storage, and a two-person invite flow.
-2. From the Supabase project's **Connect** dialog, copy the **Project URL** and **publishable key**. In the GitHub repository, edit `config.js`: place the project URL in `SUPABASE_URL` and the publishable key in `SUPABASE_ANON_KEY` (legacy variable name retained for compatibility). The project URL and browser-safe publishable key have been connected for this deployment. **Never place a secret key or service-role key in the repository.**
-3. Under **Authentication > Providers**, ensure email login is enabled. Under **Authentication > URL Configuration**, set the Site URL to `https://idyllic-stroopwafel.github.io/willas-little-wins/` and add the same exact URL under Redirect URLs. Magic links must return to this address.
-4. **Configure email delivery before inviting the second household member.** Supabase's default SMTP sends only to project organization/team email addresses and has a very low rate limit. For Hil to receive magic links without access to your Supabase project administration, configure a custom SMTP provider under **Authentication > SMTP Settings** (e.g., Resend, Postmark, or Brevo). See [Supabase's SMTP guide](https://supabase.com/docs/guides/auth/auth-smtp). Do not place SMTP credentials in this public repository.
-5. Host the folder on an HTTPS static host.
-6. On the first phone, enter an email address, follow the sign-in link, choose Hil or Peter, and create the household (leave invite code empty).
-7. In **Our pets**, copy the household invite code. On the other phone, sign in using the other person's email, choose their name, and enter that code. Both now see the same entries and media.
+1. The Supabase project is already configured in `config.js`, and the database schema and permissions are installed.
+2. In Supabase, open **Authentication → Sign In / Providers → Email** and **turn off Confirm email** (email verification) so a two-person password signup does not require outgoing email. Leave email/password authentication enabled. Hosted Supabase projects require confirmation by default.
+3. Open `https://idyllic-stroopwafel.github.io/willas-little-wins/`. On the first phone, enter an email and a **unique, strong password**, then tap **Create an account**. Choose Peter or Hil and create a household (leave invite code empty).
+4. In **Our pets**, copy the household invitation code. On the other phone, choose **Create an account** with the second person's different email and password, and then enter the invitation code to join the existing household.
+5. Afterward, use **Sign in** with that email and password if a device signs out. Sessions usually remain signed in.
 
-**Note:** Switching from local to cloud mode does *not* automatically import local prototype data. Before adding your Supabase config, use **Our pets → Export my backup** on the device where you tested the prototype. Keep the backup as a record of past attempts; the cloud household will begin with fresh training logs. The eight bundled starter photos remain visible in both modes.
+**Important trade-offs:** Without email verification, Supabase cannot establish that the signup email belongs to the person creating the account. Treat the household invitation code as private and use strong, different passwords. Until SMTP is added, **password-reset email won't work**, so save passwords in your password managers. Consider restricting new account registrations after both household members are enrolled. Never put passwords in GitHub or this README.
+
+**Note:** Switching from local to cloud mode does **not** automatically import local prototype data. Before adding Supabase credentials, use **Our pets → Export my backup** on any device where you tested the prototype. The cloud household will begin with fresh training logs. The eight bundled starter photos remain visible in both modes.
 
 ## Design notes and scope
 
